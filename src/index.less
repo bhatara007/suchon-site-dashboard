@@ -1,3 +1,17 @@
+@import './variable.less';
+
+@tailwind base;
+
+@layer base {
+    svg { 
+        display: inline;
+        vertical-align: baseline; 
+    }
+}
+@tailwind components;
+@tailwind utilities;
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +25,5 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
