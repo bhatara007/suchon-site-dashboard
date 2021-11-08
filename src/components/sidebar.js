@@ -15,10 +15,6 @@ const Sidebar = () => {
   
   const [count, setCount] = useState(1)
 
-  useEffect(() => {
-      let id = setInterval(() => {setCount(count => count+1)}, 1000);
-      return () => clearInterval(id);
-  }, []);
   
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
@@ -27,6 +23,7 @@ const Sidebar = () => {
         defaultOpenKeys={['sub1']}
         mode="inline"
         theme="dark"
+        className='h-full'
     >
     <div className='h-16 flex items-center justify-center'>
     <Typography.Text ellipsis className='text-2xl text-white font-semibold'>
@@ -34,10 +31,10 @@ const Sidebar = () => {
     </Typography.Text>
     </div>
         <Menu.Item key="" icon={<PieChartOutlined />} title="">
-        DashBoard
+          <a href='/'>DashBoard</a>
         </Menu.Item>
         <Menu.Item key="2" icon={<DesktopOutlined />}>
-        Monitor
+          <a href='/monitor'>Monitor</a>
         </Menu.Item>
         <Menu.Item key="3" icon={<ContainerOutlined />}>
         Admin

@@ -1,71 +1,62 @@
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag, Button } from 'antd';
+import axios from "../http"
+
+const { Column, ColumnGroup } = Table;
 
 
-const PeopleTable = () => {
+const PeopleTable = ({data, date}) => {
 
-    const { Column, ColumnGroup } = Table;
+  const handleDoneClick = (reservation_id) => {
+    console.log(date);
+    console.log(reservation_id);
+    axios.patch(date + "/" + reservation_id)
+  };
 
-    const data = [
-        {
-            key: '1',
-            firstName: 'John',
-            lastName: 'Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            firstName: 'Jim',
-            lastName: 'Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            firstName: 'Joe',
-            lastName: 'Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
-
-    return (
-        <Table dataSource={data}>
-            <ColumnGroup title="Name">
-            <Column title="First Name" dataIndex="firstName" key="firstName" />
-            <Column title="Last Name" dataIndex="lastName" key="lastName" />
-            </ColumnGroup>
-            <Column title="Age" dataIndex="age" key="age" />
-            <Column title="Address" dataIndex="address" key="address" />
-            <Column
-            title="Tags"
-            dataIndex="tags"
-            key="tags"
-            render={tags => (
-                <>
-                {tags.map(tag => (
-                    <Tag color="blue" key={tag}>
-                    {tag}
-                    </Tag>
-                ))}
-                </>
-            )}
-            />
-            <Column
-            title="Action"
-            key="action"
-            render={(text, record) => (
-                <Space size="middle">
-                <a>Invite {record.lastName}</a>
-                <a>Delete</a>
-                </Space>
-            )}
-            />
-        </Table>
-    );
-
+  return (
+    <Table dataSource={data}>
+      <Column
+        title="Reservation ID"
+        dataIndex="reservation_id"
+        key="name"
+      />
+      <ColumnGroup colSpan="2" title="Name">
+        <Column title="First Name" dataIndex="name" key="name" />
+        <Column title="Last Name" dataIndex="surname" key="surname" />
+      </ColumnGroup>
+      <Column title="Birth Date" dataIndex="birth_date" key="birth_date" />
+      <Column title="Address" dataIndex="address" key="address" />
+      <Column title="Occupation" dataIndex="occupation" key="occupation" />
+      <Column
+        title="Status"
+        dataIndex="vaccinated"
+        key="vaccinated"
+        render={(status) => {
+          return (
+            <div>
+              {status ? (
+                <Tag color="green">Done</Tag>
+              ) : (
+                <Tag color="red">Not yet</Tag>
+              )}
+            </div>
+          );
+        }}
+      />
+      <Column
+        title="Action"
+        dataIndex="action"
+        key="action"
+        render={(_, record) => {
+          return (
+            <div className="space-x-3">
+              <Button onClick={() => handleDoneClick(record.reservation_id)} type="primary"> Done </Button>
+              <Button type="danger"> Cancel </Button>
+            </div>
+          );
+        }}
+      />
+    </Table>
+  ); 
 }
+
 export default PeopleTable

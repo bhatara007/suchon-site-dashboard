@@ -8,8 +8,8 @@ function App() {
   
   return (
     <Switch> {/* The Switch decides which component to show based on the current URL.*/}
+      <Route exact path='/' component={Dashboard}></Route>
       <Route exact path='/monitor' component={Monitor}></Route>
-      <Route exact path='/dashboard' component={Dashboard}></Route>
     </Switch>
   );
 }
