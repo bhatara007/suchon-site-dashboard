@@ -1,9 +1,10 @@
 import React, { useState, useEffect} from "react";
 import { Modal, Button, Form, Input, DatePicker } from "antd";
 
-const AddPeopleModal = ({className}) => {
+const AddPeopleModal = ({className, date, getPeople}) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [birthDate, setBirthDate] = useState("");
 
   const [form] = Form.useForm()
 
@@ -17,18 +18,29 @@ const AddPeopleModal = ({className}) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  }; 
+
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    const json = {...values, birth_date: birthDate}
+    console.log(json);
+    setIsModalVisible(false);
+    // eslint-disable-next-line no-unused-expressions
+    getPeople(date)
   };
 
-const onFinish = (values) => {
-    console.log("Success:", values);
-    setIsModalVisible(false);
-};
-
-useEffect(() => {
+  useEffect(() => {
     if (!isModalVisible){
         form.resetFields()
     }
-}, [isModalVisible])
+  }, [isModalVisible])
+
+  const onChange = (_, dateString) => {
+      console.log(dateString);
+      setBirthDate(dateString)
+  }
+
+  const dateFormat = "DD-MM-YYYY";
 
   return (
     <>
@@ -98,7 +110,6 @@ useEffect(() => {
 
           <Form.Item
             label="Birth Date"
-            name="birth_date"
             rules={[
               {
                 required: true,
@@ -106,7 +117,7 @@ useEffect(() => {
               },
             ]}
           >
-            <DatePicker />
+            <DatePicker format={dateFormat} onChange={onChange} />
           </Form.Item>
 
           <Form.Item

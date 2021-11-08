@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button, Layout, Menu, Typography, Card, Statistic, Space } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import Sider from "../components/sidebar";
-import PeopleList from "../components/peopleList";
 import DashboardCard from "../components/dashboardCard";
 
 import { FaSyringe } from "react-icons/fa";
+import { BiChair } from "react-icons/bi";
+import { GiStickingPlaster } from "react-icons/gi"
 
 const { Header, Footer, Content } = Layout;
 const { SubMenu } = Menu;
@@ -28,7 +29,7 @@ const Dashboard = () => {
       <Layout>
         <Content className="flex flex-col min-h-screen">
           <div className="m-4 ">
-            <div className=" text-4xl font-semibold mb-8">
+            <div className=" text-4xl font-semibold mb-8 mt-11">
               <p className="text-5xl"> Dashboard</p>
             </div>
             <div className="space-x-4 flex flex-row mt-2 justify-between">
@@ -36,18 +37,28 @@ const Dashboard = () => {
                 title="Current Queue"
                 number="99"
                 color="blue"
-                icon={<TeamOutlined />}
+                icon={<FaSyringe />}
               />
               <DashboardCard
                 title="Available seat"
+                icon={<BiChair />}
                 number="9999"
                 color="green"
               />
-              <DashboardCard title="Total people" number="99" color="gray" />
-              <DashboardCard title="Vaccinated" number="99" color="orange" />
+              <DashboardCard
+                title="Total people"
+                icon={<TeamOutlined />}
+                number="99"
+                color="gray"
+              />
+              <DashboardCard 
+              title="Vaccinated"
+              icon={<GiStickingPlaster/>} 
+              number="99" 
+              color="orange" />
             </div>
-            <div className="flex m-5 justify-center mt-7">
-              <p className='text-6xl'>Name BHATARA CHAEMCHAN</p>
+            <div className="flex m-5 justify-center mt-24">
+              <p className="text-6xl font-semibold">Name BHATARA CHAEMCHAN</p>
             </div>
           </div>
         </Content>

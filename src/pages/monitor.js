@@ -40,11 +40,18 @@ const Monitor = () => {
     getPeople(dateString)
   }
 
-  const handleDoneClick = (reservation_id) => {
-    console.log(date);
-    console.log(reservation_id);
-    axios.patch(date + "/" + reservation_id);
+  const handleDoneClick = async (e, reservation_id) => {
+    e.preventDefault();
+    await axios.patch("vaccinated/" + date + "/" + reservation_id);
+    getPeople(date)
+    console.log(people);
   };
+
+  const handleCancelClick = async (e, reservation_id) => {
+    e.preventDefault();
+    await axios.patch("cancel/" + date + "/" + reservation_id)
+    getPeople(date);
+  }
 
   const dateFormat = "DD-MM-YYYY";
 
@@ -56,7 +63,11 @@ const Monitor = () => {
         <Header className="bg-white"></Header>
         <Content className="flex flex-col min-h-screen">
           <div className="m-10 space-x-3">
-            <AddPeopleModal className="mb-4 ml-3" />
+            <AddPeopleModal
+              className="mb-4 ml-3"
+              date={date}
+              getPeople={getPeople}
+            />
             <DatePicker onChange={onChange} format={dateFormat} />
             <Table dataSource={people}>
               <Column
@@ -103,13 +114,23 @@ const Monitor = () => {
                   return (
                     <div className="space-x-3">
                       <Button
-                        onClick={() => handleDoneClick(record.reservation_id)}
+                        onClick={(e) =>
+                          handleDoneClick(e, record.reservation_id)
+                        }
                         type="primary"
                       >
                         {" "}
                         Done{" "}
                       </Button>
-                      <Button type="danger"> Cancel </Button>
+                      <Button
+                        onClick={(e) =>
+                          handleCancelClick(e, record.reservation_id)
+                        }
+                        type="danger"
+                      >
+                        {" "}
+                        Cancel{" "}
+                      </Button>
                     </div>
                   );
                 }}
@@ -117,7 +138,7 @@ const Monitor = () => {
             </Table>
           </div>
         </Content>
-        <Footer>Footer</Footer>
+        <Footer></Footer>
       </Layout>
     </Layout>
   );
