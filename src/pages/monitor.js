@@ -21,13 +21,19 @@ const Monitor = () => {
 
   const [people, setPeople] = useState([])
   const [date, setDate] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const getPeople = async (date) => {
-
-    const res = await axios.get('by_date/' + date)
-    setPeople(res.data.people)
-    setDate(res.data.date)
-    console.log(res.data.date);
+    setLoading(true)
+    try{
+      const res = await axios.get('by_date/' + date)
+      setPeople(res.data.people);
+      setDate(res.data.date);
+      console.log(res.data.date);
+    }catch(error){ 
+      console.log(error.response.status);
+    }
+    setLoading(false);
     
   }
 
@@ -55,6 +61,61 @@ const Monitor = () => {
 
   const dateFormat = "DD-MM-YYYY";
 
+    const p = [
+      {
+        reservation_id: 7,
+        register_timestamp: "2021-10-20T17:12:39.738000",
+        name: "faa",
+        surname: "rockmakmak",
+        birth_date: "2002-10-22",
+        citizen_id: "1234567848204",
+        occupation: "programmer",
+        address: "bkk thailand",
+        priority: "3",
+        vaccinated: false,
+        vac_time: 9,
+      },
+      {
+        reservation_id: 8,
+        register_timestamp: "2021-10-20T17:12:39.738000",
+        name: "fee",
+        surname: "rockmakmak",
+        birth_date: "2002-10-22",
+        citizen_id: "1234567848204",
+        occupation: "programmer",
+        address: "bkk thailand",
+        priority: "3",
+        vaccinated: false,
+        vac_time: 9,
+      },
+      {
+        reservation_id: 9,
+        register_timestamp: "2021-10-20T17:12:39.738000",
+        name: "fuu",
+        surname: "rockmakmak",
+        birth_date: "2002-10-22",
+        citizen_id: "1234567848204",
+        occupation: "programmer",
+        address: "bkk thailand",
+        priority: "3",
+        vaccinated: true,
+        vac_time: 9,
+      },
+      {
+        reservation_id: 10,
+        register_timestamp: "2021-10-20T17:12:39.738000",
+        name: "fii",
+        surname: "rockmakmak",
+        birth_date: "2002-10-22",
+        citizen_id: "1234567848204",
+        occupation: "programmer",
+        address: "bkk thailand",
+        priority: "3",
+        vaccinated: false,
+        vac_time: 9,
+      },
+    ]
+
 
   return (
     <Layout>
@@ -69,14 +130,20 @@ const Monitor = () => {
               getPeople={getPeople}
             />
             <DatePicker onChange={onChange} format={dateFormat} />
-            <Table dataSource={people}>
+            <Table dataSource={p} loading={loading}>
               <Column
                 title="Reservation ID"
                 dataIndex="reservation_id"
                 key="name"
+                sorter={(a, b) => a - b}
               />
               <ColumnGroup colSpan="2" title="Name">
-                <Column title="First Name" dataIndex="name" key="name" />
+                <Column
+                  title="First Name"
+                  dataIndex="name"
+                  key="name"
+                  sorter={(a, b) => a.name.localeCompare(b.name)}
+                />
                 <Column title="Last Name" dataIndex="surname" key="surname" />
               </ColumnGroup>
               <Column
@@ -94,6 +161,11 @@ const Monitor = () => {
                 title="Status"
                 dataIndex="vaccinated"
                 key="vaccinated"
+                sorter={(a, b) => {
+                  if (a.vaccinated) return -1;
+                  if (b.vaccinated) return 1;
+                  return 0;
+                }}
                 render={(status) => {
                   return (
                     <div>
