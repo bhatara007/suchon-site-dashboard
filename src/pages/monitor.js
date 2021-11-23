@@ -130,7 +130,7 @@ const Monitor = () => {
               getPeople={getPeople}
             />
             <DatePicker onChange={onChange} format={dateFormat} />
-            <Table dataSource={p} loading={loading}>
+            <Table dataSource={people} loading={loading}>
               <Column
                 title="Reservation ID"
                 dataIndex="reservation_id"

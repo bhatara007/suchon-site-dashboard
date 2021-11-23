@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Modal, Button, Form, Input, DatePicker } from "antd";
+import  axios from "../http" 
 
 const AddPeopleModal = ({className, date, getPeople}) => {
 
@@ -20,12 +21,12 @@ const AddPeopleModal = ({className, date, getPeople}) => {
     setIsModalVisible(false);
   }; 
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Success:", values);
     const json = {...values, birth_date: birthDate}
     console.log(json);
     setIsModalVisible(false);
-    // eslint-disable-next-line no-unused-expressions
+    // await axios.post("add/" + date, json);
     getPeople(date)
   };
 

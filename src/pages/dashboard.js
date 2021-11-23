@@ -1,36 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Button, Layout, Menu } from "antd";
+import {Layout, Menu } from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import Sider from "../components/sidebar";
 import DashboardCard from "../components/dashboardCard";
-
+import styled from 'styled-components';
 import { FaSyringe } from "react-icons/fa";
 import { BiChair } from "react-icons/bi";
 import { GiStickingPlaster } from "react-icons/gi"
 
-const { Header, Footer, Content } = Layout;
-const { SubMenu } = Menu;
+const {Footer, Content } = Layout;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 
 const Dashboard = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const [count, setCount] = useState(1);
-
-  useEffect(() => {
-    let id = setInterval(() => {
-      setCount((count) => count + 1);
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
 
   return (
     <Layout>
       <Sider></Sider>
       <Layout>
-        <Content className="flex flex-col min-h-screen">
+        <Container>
           <div className="m-4 ">
-            <div className=" text-4xl font-semibold mb-8 mt-11">
-              <p className="text-5xl"> Dashboard</p>
+            <div className=" text-4xl font-semibold mb-8">
+              <p className="text-5xl mt-7"> Dashboard</p>
             </div>
             <div className="space-x-4 flex flex-row mt-2 justify-between">
               <DashboardCard
@@ -51,17 +46,19 @@ const Dashboard = () => {
                 number="99"
                 color="gray"
               />
-              <DashboardCard 
-              title="Vaccinated"
-              icon={<GiStickingPlaster/>} 
-              number="99" 
-              color="orange" />
+              <DashboardCard
+                title="Vaccinated"
+                icon={<GiStickingPlaster />}
+                number="99"
+                color="orange"
+              />
             </div>
-            <div className="flex m-5 justify-center mt-24">
-              <p className="text-6xl font-semibold">Name BHATARA CHAEMCHAN</p>
+            <div className=" font-semibold text-gray-700 rounded-xl overflow-hidden flex items-center flex-col space-y-6 mt-10 bg-white">
+              <p className="text-4xl font-semibold mt-4"> Name </p>
+              <p className="text-4xl font-semibold pb-5">BHATARA CHAEMCHAN</p>
             </div>
           </div>
-        </Content>
+        </Container>
         <Footer></Footer>
       </Layout>
     </Layout>
