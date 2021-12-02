@@ -79,7 +79,12 @@ const Dashboard = () => {
               />
             </div>
           </div>
-                      <Table dataSource={people} loading={loading}>
+          <div className="mx-5">
+            <p className="text-5xl mb-5 font-semibold">
+              {" "}
+              Queue Information
+            </p>
+            <Table dataSource={people} loading={loading}>
               <Column
                 title="Reservation ID"
                 dataIndex="reservation_id"
@@ -127,30 +132,8 @@ const Dashboard = () => {
                   );
                 }}
               />
-              <Column
-                title="Action"
-                dataIndex="action"
-                key="action"
-                render={(_, record) => {
-                  return (
-                    <div className="space-x-3">
-                      <Button
-                        type="primary"
-                      >
-                        {" "}
-                        Done{" "}
-                      </Button>
-                      <Button
-                        type="danger"
-                      >
-                        {" "}
-                        Cancel{" "}
-                      </Button>
-                    </div>
-                  );
-                }}
-              />
             </Table>
+          </div>
         </Container>
         <Footer></Footer>
       </Layout>

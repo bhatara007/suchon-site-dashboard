@@ -2,7 +2,7 @@ const DashboardCard = ({color, title, number, icon}) => {
     return (
       <div className={`text-black text-center w-1/4 bg-white relative h-36 rounded-xl overflow-hidden`}>
         <div className="">
-          <p className="mx-6 mt-3 text-2xl"> {title} </p>
+          <p className="mx-6 mt-3 text-4xl"> {title} </p>
           <div className='space-x-3 flex flex-row justify-center'>
             <p className="mt-4 text-3xl">
               {number} 

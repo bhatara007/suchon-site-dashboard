@@ -36,9 +36,6 @@ const Sidebar = () => {
         <Menu.Item key="2" icon={<DesktopOutlined />}>
           <a href='/monitor'>Monitor</a>
         </Menu.Item>
-        <Menu.Item key="3" icon={<ContainerOutlined />}>
-        Admin
-        </Menu.Item>
     </Menu>
     </Sider>
   );
