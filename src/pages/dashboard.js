@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Layout, Menu } from "antd";
+import {Layout,Table, Tag, Button} from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import Sider from "../components/sidebar";
 import DashboardCard from "../components/dashboardCard";
@@ -7,8 +7,10 @@ import styled from 'styled-components';
 import { FaSyringe } from "react-icons/fa";
 import { BiChair } from "react-icons/bi";
 import { GiStickingPlaster } from "react-icons/gi"
+import axios from "../http";
 
 const {Footer, Content } = Layout;
+const { Column, ColumnGroup } = Table;
 
 const Container = styled.div`
   display: flex;
@@ -17,6 +19,29 @@ const Container = styled.div`
 `;
 
 const Dashboard = () => {
+
+  const [people, setPeople] = useState([])
+  const [date, setDate] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const getPeople = async (date) => {
+    setLoading(true)
+    try{
+      const res = await axios.get("by_date/" + "11-11-2021");
+      setPeople(res.data.people);
+      setDate(res.data.date);
+      console.log(res.data);
+    }catch(error){ 
+      console.log(error.response.status);
+    }
+    setLoading(false);
+    
+  }
+
+  useEffect(() => {
+    getPeople()
+  }, [])
+
 
   return (
     <Layout>
@@ -53,11 +78,79 @@ const Dashboard = () => {
                 color="orange"
               />
             </div>
-            <div className=" font-semibold text-gray-700 rounded-xl overflow-hidden flex items-center flex-col space-y-6 mt-10 bg-white">
-              <p className="text-4xl font-semibold mt-4"> Name </p>
-              <p className="text-4xl font-semibold pb-5">BHATARA CHAEMCHAN</p>
-            </div>
           </div>
+                      <Table dataSource={people} loading={loading}>
+              <Column
+                title="Reservation ID"
+                dataIndex="reservation_id"
+                key="name"
+                sorter={(a, b) => a - b}
+              />
+              <ColumnGroup colSpan="2" title="Name">
+                <Column
+                  title="First Name"
+                  dataIndex="name"
+                  key="name"
+                  sorter={(a, b) => a.name.localeCompare(b.name)}
+                />
+                <Column title="Last Name" dataIndex="surname" key="surname" />
+              </ColumnGroup>
+              <Column
+                title="Birth Date"
+                dataIndex="birth_date"
+                key="birth_date"
+              />
+              <Column title="Address" dataIndex="address" key="address" />
+              <Column
+                title="Occupation"
+                dataIndex="occupation"
+                key="occupation"
+              />
+              <Column
+                title="Status"
+                dataIndex="vaccinated"
+                key="vaccinated"
+                sorter={(a, b) => {
+                  if (a.vaccinated) return -1;
+                  if (b.vaccinated) return 1;
+                  return 0;
+                }}
+                render={(status) => {
+                  return (
+                    <div>
+                      {status ? (
+                        <Tag color="green">Done</Tag>
+                      ) : (
+                        <Tag color="red">Not yet</Tag>
+                      )}
+                    </div>
+                  );
+                }}
+              />
+              <Column
+                title="Action"
+                dataIndex="action"
+                key="action"
+                render={(_, record) => {
+                  return (
+                    <div className="space-x-3">
+                      <Button
+                        type="primary"
+                      >
+                        {" "}
+                        Done{" "}
+                      </Button>
+                      <Button
+                        type="danger"
+                      >
+                        {" "}
+                        Cancel{" "}
+                      </Button>
+                    </div>
+                  );
+                }}
+              />
+            </Table>
         </Container>
         <Footer></Footer>
       </Layout>
