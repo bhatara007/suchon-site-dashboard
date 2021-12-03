@@ -23,8 +23,10 @@ const AddPeopleModal = ({className, date, getPeople}) => {
 
   const onFinish = async (values) => {
     console.log("Success:", values);
+    console.log("dateeeee: ", date)
     const json = {...values, birth_date: birthDate}
     console.log(json);
+    await axios.patch("add/" + date, json)
     setIsModalVisible(false);
     // await axios.post("add/" + date, json);
     getPeople(date)

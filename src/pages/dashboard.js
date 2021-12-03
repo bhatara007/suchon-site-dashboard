@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Layout,Table, Tag, Button} from "antd";
+import {Layout,Table, Tag, Button, DatePicker} from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import Sider from "../components/sidebar";
 import DashboardCard from "../components/dashboardCard";
@@ -8,6 +8,7 @@ import { FaSyringe } from "react-icons/fa";
 import { BiChair } from "react-icons/bi";
 import { GiStickingPlaster } from "react-icons/gi"
 import axios from "../http";
+import moment from 'moment'
 
 const {Footer, Content } = Layout;
 const { Column, ColumnGroup } = Table;
@@ -20,28 +21,76 @@ const Container = styled.div`
 
 const Dashboard = () => {
 
+  const dateFormat = "DD-MM-YYYY";
+
   const [people, setPeople] = useState([])
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState(moment(new Date()).format("DD-MM-YYYY"))
   const [loading, setLoading] = useState(false)
 
-  const getPeople = async (date) => {
-    setLoading(true)
-    try{
-      const res = await axios.get("by_date/" + "11-11-2021");
-      setPeople(res.data.people);
-      setDate(res.data.date);
-      console.log(res.data);
-    }catch(error){ 
-      console.log(error.response.status);
-    }
-    setLoading(false);
-    
+  const [current, setCurrent] = useState("")
+  const [available, setAvailable] = useState("");
+  const [total, setTotal] = useState("");
+  const [vaccine, setVaccine] = useState("");
+
+  const getCurrent = async () => {
+      axios.get('')
   }
 
-  useEffect(() => {
-    getPeople()
-  }, [])
+  const getAvailable = async (date) => {
+      const { data } = await axios.get("count/walkin/" + date);
+      console.log(data);
+      setAvailable(data.total_walkin)
+  };
 
+  const getTotal = async (date) => {
+      const { data } = await axios.get("count/total/" + date);
+      setTotal(data.count);
+      setVaccine(data.vaccinated)
+
+  };
+
+  const getVaccine = async () => {
+
+  };
+
+  
+  const onChange = (_, dateString) => {
+    console.log("dateeeeee", dateString);
+    setDate(dateString);
+    getAvailable(dateString);
+    getTotal(dateString);
+    getPeople(dateString);
+  };
+  
+  
+  // const getPeople = async (date) => {
+  //   console.log(date)
+  //   setLoading(true)
+  //   try{
+  //     const res = await axios.get("by_date/" + "03-12-2021");
+  //     setPeople(res.data);
+  //     setDate(res.data.date);
+  //     console.log(res.data)
+  //   }catch(error){ 
+  //     console.log(error);
+  //   }
+  //   setLoading(false);
+    
+  // }
+
+  const getPeople = async (date) => {
+    const res = await axios.get("by_date/queue/" + date);
+    console.log(res.data);
+    setPeople(res.data.people);
+    setDate(res.data.date)
+  };
+  
+  useEffect(() => {
+    setDate(moment(new Date()).format("DD-MM-YYYY"));
+    getAvailable(date)
+    getTotal(date)
+    getPeople(date);
+  }, [])
 
   return (
     <Layout>
@@ -54,39 +103,37 @@ const Dashboard = () => {
             </div>
             <div className="space-x-4 flex flex-row mt-2 justify-between">
               <DashboardCard
-                title="Current Queue"
+                title="Current"
                 number="99"
                 color="blue"
                 icon={<FaSyringe />}
               />
               <DashboardCard
-                title="Available seat"
+                title="Available"
                 icon={<BiChair />}
-                number="9999"
+                number={available}
                 color="green"
               />
               <DashboardCard
                 title="Total people"
                 icon={<TeamOutlined />}
-                number="99"
+                number={total}
                 color="gray"
               />
               <DashboardCard
                 title="Vaccinated"
                 icon={<GiStickingPlaster />}
-                number="99"
+                number={vaccine}
                 color="orange"
               />
             </div>
           </div>
           <div className="mx-5">
-            <p className="text-5xl mb-5 font-semibold">
-              {" "}
-              Queue Information
-            </p>
+            <p className="text-5xl mb-5 font-semibold"> Queue Information</p>
+            <DatePicker onChange={onChange} format={dateFormat} />
             <Table dataSource={people} loading={loading}>
               <Column
-                title="Reservation ID"
+                title="Queue"
                 dataIndex="reservation_id"
                 key="name"
                 sorter={(a, b) => a - b}

@@ -7,6 +7,7 @@ import Sider from '../components/sidebar'
 import DashboardCard from '../components/dashboardCard';
 import axios from '../http'
 import AddPeopleModal from '../components/addPeopleModal';
+import moment  from 'moment';
 
 import { FaSyringe } from 'react-icons/fa'
 
@@ -19,8 +20,9 @@ const { SubMenu } = Menu;
 
 const Monitor = () => {
 
+
   const [people, setPeople] = useState([])
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState(moment(new Date()).format("DD-MM-YYYY"));
   const [loading, setLoading] = useState(false)
 
   const getPeople = async (date) => {
@@ -28,8 +30,9 @@ const Monitor = () => {
     try{
       const res = await axios.get('by_date/' + date)
       setPeople(res.data.people);
-      setDate(res.data.date);
-      console.log(res.data.date);
+      if(res.data.date){
+        setDate(res.data.date);
+      }
     }catch(error){ 
       console.log(error.response.status);
     }
@@ -38,19 +41,23 @@ const Monitor = () => {
   }
 
   useEffect(() => {
-    getPeople('20-10-2021')
+    getPeople(date)
+    console.log(date)
   }, [])
 
   const onChange = (_, dateString) => {
-    console.log(dateString);
+    setDate(dateString)
     getPeople(dateString)
   }
 
   const handleDoneClick = async (e, reservation_id) => {
     e.preventDefault();
-    await axios.patch("vaccinated/" + date + "/" + reservation_id);
+    try{
+      await axios.patch("vaccinated/" + date + "/" + reservation_id);
+    }catch(error){
+      console.log(error);
+    }
     getPeople(date)
-    console.log(people);
   };
 
   const handleCancelClick = async (e, reservation_id) => {
@@ -60,62 +67,6 @@ const Monitor = () => {
   }
 
   const dateFormat = "DD-MM-YYYY";
-
-    const p = [
-      {
-        reservation_id: 7,
-        register_timestamp: "2021-10-20T17:12:39.738000",
-        name: "faa",
-        surname: "rockmakmak",
-        birth_date: "2002-10-22",
-        citizen_id: "1234567848204",
-        occupation: "programmer",
-        address: "bkk thailand",
-        priority: "3",
-        vaccinated: false,
-        vac_time: 9,
-      },
-      {
-        reservation_id: 8,
-        register_timestamp: "2021-10-20T17:12:39.738000",
-        name: "fee",
-        surname: "rockmakmak",
-        birth_date: "2002-10-22",
-        citizen_id: "1234567848204",
-        occupation: "programmer",
-        address: "bkk thailand",
-        priority: "3",
-        vaccinated: false,
-        vac_time: 9,
-      },
-      {
-        reservation_id: 9,
-        register_timestamp: "2021-10-20T17:12:39.738000",
-        name: "fuu",
-        surname: "rockmakmak",
-        birth_date: "2002-10-22",
-        citizen_id: "1234567848204",
-        occupation: "programmer",
-        address: "bkk thailand",
-        priority: "3",
-        vaccinated: true,
-        vac_time: 9,
-      },
-      {
-        reservation_id: 10,
-        register_timestamp: "2021-10-20T17:12:39.738000",
-        name: "fii",
-        surname: "rockmakmak",
-        birth_date: "2002-10-22",
-        citizen_id: "1234567848204",
-        occupation: "programmer",
-        address: "bkk thailand",
-        priority: "3",
-        vaccinated: false,
-        vac_time: 9,
-      },
-    ]
-
 
   return (
     <Layout>
@@ -130,7 +81,7 @@ const Monitor = () => {
               getPeople={getPeople}
             />
             <DatePicker onChange={onChange} format={dateFormat} />
-            <Table dataSource={people} loading={loading}>
+            <Table dataSource={people} loading={loading} className=' mx-20'>
               <Column
                 title="Reservation ID"
                 dataIndex="reservation_id"
@@ -184,8 +135,9 @@ const Monitor = () => {
                 key="action"
                 render={(_, record) => {
                   return (
-                    <div className="space-x-3">
+                    <div className="space-y-2 flex flex-col items-center">
                       <Button
+                        className="w-20"
                         onClick={(e) =>
                           handleDoneClick(e, record.reservation_id)
                         }
@@ -195,6 +147,7 @@ const Monitor = () => {
                         Done{" "}
                       </Button>
                       <Button
+                        className="w-20"
                         onClick={(e) =>
                           handleCancelClick(e, record.reservation_id)
                         }
