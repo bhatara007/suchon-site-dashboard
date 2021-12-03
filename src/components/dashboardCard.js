@@ -4,7 +4,7 @@ const DashboardCard = ({color, title, number, icon}) => {
         <div className="">
           <p className="mx-6 mt-3 text-4xl"> {title} </p>
           <div className='space-x-3 flex flex-row justify-center'>
-            <p className="mt-4 text-3xl">
+            <p className="mt-4 text-2xl">
               {number} 
             </p>
             <p className="mt-4 text-3xl text-gray-700">

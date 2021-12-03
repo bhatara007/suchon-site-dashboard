@@ -32,13 +32,13 @@ const Dashboard = () => {
   const [total, setTotal] = useState("");
   const [vaccine, setVaccine] = useState("");
 
-  const getCurrent = async () => {
-      axios.get('')
+  const getCurrent = async (date) => {
+      const { data } = await axios.get("by_date/queue/current/" + date);
+      setCurrent(data.reservation_id);
   }
 
   const getAvailable = async (date) => {
       const { data } = await axios.get("count/walkin/" + date);
-      console.log(data);
       setAvailable(data.total_walkin)
   };
 
@@ -48,18 +48,13 @@ const Dashboard = () => {
       setVaccine(data.vaccinated)
 
   };
-
-  const getVaccine = async () => {
-
-  };
-
   
   const onChange = (_, dateString) => {
-    console.log("dateeeeee", dateString);
     setDate(dateString);
     getAvailable(dateString);
     getTotal(dateString);
     getPeople(dateString);
+    getCurrent(dateString)
   };
 
 
@@ -75,6 +70,7 @@ const Dashboard = () => {
     getAvailable(date)
     getTotal(date)
     getPeople(date);
+    getCurrent(date)
   }, [])
 
   return (
@@ -90,7 +86,7 @@ const Dashboard = () => {
             <div className="space-x-4 flex flex-row mt-2 justify-between">
               <DashboardCard
                 title="Current"
-                number="99"
+                number={current}
                 color="blue"
                 icon={<FaSyringe />}
               />
@@ -116,7 +112,7 @@ const Dashboard = () => {
           </div>
           <div className="mx-5">
             <p className="text-5xl mb-5"> Queue Information</p>
-            <DatePicker onChange={onChange} format={dateFormat} />
+            <DatePicker onChange={onChange} format={dateFormat} className="mb-4" />
             <Table dataSource={people} loading={loading}>
               <Column
                 title="Queue"
