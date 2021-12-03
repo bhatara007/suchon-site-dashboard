@@ -42,7 +42,6 @@ const Monitor = () => {
 
   useEffect(() => {
     getPeople(date)
-    console.log(date)
   }, [])
 
   const onChange = (_, dateString) => {

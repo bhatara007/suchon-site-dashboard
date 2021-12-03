@@ -85,7 +85,7 @@ const Dashboard = () => {
             </div>
             <div className="space-x-4 flex flex-row mt-2 justify-between">
               <DashboardCard
-                title="Current"
+                title="Next Queue"
                 number={current}
                 color="blue"
                 icon={<FaSyringe />}
