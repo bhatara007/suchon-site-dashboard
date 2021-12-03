@@ -61,22 +61,7 @@ const Dashboard = () => {
     getTotal(dateString);
     getPeople(dateString);
   };
-  
-  
-  // const getPeople = async (date) => {
-  //   console.log(date)
-  //   setLoading(true)
-  //   try{
-  //     const res = await axios.get("by_date/" + "03-12-2021");
-  //     setPeople(res.data);
-  //     setDate(res.data.date);
-  //     console.log(res.data)
-  //   }catch(error){ 
-  //     console.log(error);
-  //   }
-  //   setLoading(false);
-    
-  // }
+
 
   const getPeople = async (date) => {
     const res = await axios.get("by_date/queue/" + date);
@@ -97,9 +82,10 @@ const Dashboard = () => {
       <Sider></Sider>
       <Layout>
         <Container>
-          <div className="m-4 ">
-            <div className=" text-4xl font-semibold mb-8">
+          <div className="m-4">
+            <div className="space-y-2 mb-6">
               <p className="text-5xl mt-7"> Dashboard</p>
+              <p className="mt-7 text-lg "> Date: {date} </p>
             </div>
             <div className="space-x-4 flex flex-row mt-2 justify-between">
               <DashboardCard
@@ -129,7 +115,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="mx-5">
-            <p className="text-5xl mb-5 font-semibold"> Queue Information</p>
+            <p className="text-5xl mb-5"> Queue Information</p>
             <DatePicker onChange={onChange} format={dateFormat} />
             <Table dataSource={people} loading={loading}>
               <Column
