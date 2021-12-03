@@ -72,16 +72,19 @@ const Monitor = () => {
     <Layout>
       <Sider></Sider>
       <Layout>
-        <Header className="bg-white"></Header>
+        <div className="space-y-2">
+          <p className="text-5xl mt-7 ml-12"> Monitor</p>
+          <p className='mt-7 ml-12 text-lg mb-2'> Date: {date} </p>
+        </div>
         <Content className="flex flex-col min-h-screen">
-          <div className="m-10 space-x-3">
+          <div className="m-10 mt-5 space-x-3">
             <AddPeopleModal
               className="mb-4 ml-3"
               date={date}
               getPeople={getPeople}
             />
             <DatePicker onChange={onChange} format={dateFormat} />
-            <Table dataSource={people} loading={loading} className=' mx-20'>
+            <Table dataSource={people} loading={loading} className=" mx-20">
               <Column
                 title="Reservation ID"
                 dataIndex="reservation_id"
